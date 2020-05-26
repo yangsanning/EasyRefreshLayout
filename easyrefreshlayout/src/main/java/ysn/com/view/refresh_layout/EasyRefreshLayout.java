@@ -23,6 +23,8 @@ import ysn.com.view.refresh_layout.constant.RefreshState;
 import ysn.com.view.refresh_layout.constant.RefreshTag;
 import ysn.com.view.refresh_layout.listener.FootListener;
 import ysn.com.view.refresh_layout.listener.HeadListener;
+import ysn.com.view.refresh_layout.listener.OnLoadMoreListener;
+import ysn.com.view.refresh_layout.listener.OnRefreshListener;
 import ysn.com.view.refresh_layout.listener.OnRefreshLoadMoreListener;
 import ysn.com.view.refresh_layout.utils.AnimUtils;
 
@@ -85,6 +87,8 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
     private HeadListener headListener;
     private FootListener footListener;
     private OnRefreshLoadMoreListener onRefreshLoadMoreListener;
+    private OnRefreshListener onRefreshListener;
+    private OnLoadMoreListener onLoadMoreListener;
 
     public EasyRefreshLayout(Context context) {
         this(context, null);
@@ -208,7 +212,7 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
     @Override
     public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed) {
         if (headView != null && enableRefresh && !isRefreshing && refreshTag == RefreshTag.REFRESH
-            && dy > 0 && refreshOffsetValue > 0) {
+                && dy > 0 && refreshOffsetValue > 0) {
             refreshOffsetValue -= dy;
             if (refreshOffsetValue <= 0) {
                 refreshOffsetValue = 0;
@@ -219,7 +223,7 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
 
         if (footView != null && enableLoadMore && !isLoading && refreshTag == RefreshTag.LOAD_MORE
-            && dy < 0 && getScrollY() >= bottomScroll && loadMoreOffsetValue > 0) {
+                && dy < 0 && getScrollY() >= bottomScroll && loadMoreOffsetValue > 0) {
             loadMoreOffsetValue += dy;
             startLoadMore(dy);
             consumed[1] = dy;
@@ -237,7 +241,7 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (refreshTag == RefreshTag.REFRESH) {
             scrollBy(dy);
             int end = (headListener != null && headListener.getRefreshHeight() != 0) ?
-                headListener.getRefreshHeight() : headerHeight;
+                    headListener.getRefreshHeight() : headerHeight;
             if (Math.abs(scrollY) > end) {
                 refreshStatusChange(RefreshState.REFRESH_AFTER);
             } else {
@@ -279,6 +283,9 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
                 if (onRefreshLoadMoreListener != null) {
                     onRefreshLoadMoreListener.onRefresh();
                 }
+                if (onRefreshListener != null) {
+                    onRefreshListener.onRefresh();
+                }
                 break;
             case REFRESH_COMPLETE:
                 if (headListener != null) {
@@ -311,6 +318,9 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
                 }
                 if (onRefreshLoadMoreListener != null) {
                     onRefreshLoadMoreListener.onLoadMore();
+                }
+                if (onLoadMoreListener != null) {
+                    onLoadMoreListener.onLoadMore();
                 }
                 break;
             case LOAD_MORE_COMPLETE:
@@ -361,7 +371,7 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
 
         if (enableLoadMore && (enableAutoLoadMore || footView != null) && getScrollY() >= bottomScroll
-            && dy > 0 && !isLoading && loadMoreOffsetValue <= 4 * footHeight) {
+                && dy > 0 && !isLoading && loadMoreOffsetValue <= 4 * footHeight) {
             loadMoreOffsetValue += dy;
             if (refreshTag == RefreshTag.NONE || loadMoreOffsetValue != 0) {
                 refreshTag = RefreshTag.LOAD_MORE;
@@ -591,7 +601,7 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                isDrag =  Boolean.FALSE;
+                isDrag = Boolean.FALSE;
                 break;
             case MotionEvent.ACTION_MOVE: {
                 final float y = ev.getY();
@@ -610,7 +620,7 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
             }
             case MotionEvent.ACTION_UP: {
                 if (isDrag) {
-                    isDrag =  Boolean.FALSE;
+                    isDrag = Boolean.FALSE;
                     resetScroll();
                 }
                 return false;
@@ -811,6 +821,25 @@ public class EasyRefreshLayout extends ViewGroup implements NestedScrollingParen
         return this;
     }
 
+    /**
+     * 设置刷新监听
+     */
+    public EasyRefreshLayout setOnRefreshListener(OnRefreshListener onRefreshListener) {
+        this.onRefreshListener = onRefreshListener;
+        return this;
+    }
+
+    /**
+     * 设置加载更多监听
+     */
+    public EasyRefreshLayout setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+        return this;
+    }
+
+    /**
+     * 子视图滚动拦截
+     */
     public EasyRefreshLayout setOnChildScrollUpCallback(@Nullable OnChildScrollUpCallback onChildScrollUpCallback) {
         this.onChildScrollUpCallback = onChildScrollUpCallback;
         return this;
