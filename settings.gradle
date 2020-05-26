@@ -1,2 +1,2 @@
-include ':app', ':jackrefreshlayout'
-rootProject.name='JackRefreshLayout'
+include ':app', ':easyrefreshlayout'
+rootProject.name='EasyRefreshLayout'

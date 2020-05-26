@@ -13,15 +13,15 @@ import java.util.List;
 
 import ysn.com.demo.jackrefreshlayout.view.FootView;
 import ysn.com.demo.jackrefreshlayout.view.HeadView;
-import ysn.com.view.jackrefreshlayout.JackRefreshLayout;
-import ysn.com.view.jackrefreshlayout.listener.OnRefreshLoadMoreListener;
+import ysn.com.view.refresh_layout.EasyRefreshLayout;
+import ysn.com.view.refresh_layout.listener.OnRefreshLoadMoreListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private DataAdapter adapter;
     private List<String> dataList = new ArrayList<>();
 
-    private JackRefreshLayout jackRefreshLayout;
+    private EasyRefreshLayout jackRefreshLayout;
     private RecyclerView recyclerView;
 
     @Override

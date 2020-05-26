@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import ysn.com.demo.jackrefreshlayout.R;
-import ysn.com.view.jackrefreshlayout.listener.FootListener;
+import ysn.com.view.refresh_layout.listener.FootListener;
 
 /**
  * @Author yangsanning

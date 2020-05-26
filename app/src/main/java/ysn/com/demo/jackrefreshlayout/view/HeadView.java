@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ysn.com.demo.jackrefreshlayout.R;
-import ysn.com.view.jackrefreshlayout.listener.HeadListener;
+import ysn.com.view.refresh_layout.listener.HeadListener;
 
 /**
  * @Author yangsanning

@@ -25,7 +25,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.supportLibs
 
-    implementation project(':jackrefreshlayout')
+    implementation project(':easyrefreshlayout')
 
     // 用于数据演示
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
